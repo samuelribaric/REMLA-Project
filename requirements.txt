@@ -4,5 +4,7 @@ tensorflow
 keras
 scikit-learn
 matplotlib
+pylint
+dslinter
 requests
 tqdm
