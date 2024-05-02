@@ -1,28 +1,30 @@
-from tensorflow.keras.callbacks import ModelCheckpoint
+from data_loader import load_and_preprocess_data
 from model import build_model
-from data_loader import load_data, preprocess_data, encode_labels
+from keras.callbacks import ModelCheckpoint
+import os
 
 def train_model():
-    # Load and preprocess data
-    raw_train = load_data("data/train.txt")
-    x_train, tokenizer = preprocess_data([line.split("\t")[1] for line in raw_train])
-    y_train, encoder = encode_labels([line.split("\t")[0] for line in raw_train])
+    file_paths = {
+        'train': 'data/train.txt',
+        'test': 'data/test.txt',
+        'val': 'data/val.txt'
+    }
+    data, char_index = load_and_preprocess_data(file_paths)
+    x_train, y_train = data['train']
+    x_val, y_val = data['val']
 
-    # Build model
-    voc_size = len(tokenizer.word_index.keys())
-    model = build_model(voc_size, 2)  # Assuming 2 categories: 'phishing', 'legitimate'
+    model = build_model(len(char_index), 2)
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    # Compile model
-    model.compile(optimizer='adam', loss='binary_crossentropy')
+    checkpoint_path = "models/best_model.keras"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
 
-    # Setup model saving
-    checkpoint_callback = ModelCheckpoint('models/best_model.keras', save_best_only=True, monitor='val_loss')
+    if not os.path.exists(checkpoint_dir):
+        os.makedirs(checkpoint_dir)
 
-    # Print summary of model
+    checkpoint_callback = ModelCheckpoint(checkpoint_path, save_best_only=True, monitor='val_loss')
+    model.fit(x_train, y_train, batch_size=5000, epochs=30, validation_data=(x_val, y_val), callbacks=[checkpoint_callback])
     print(model.summary())
-
-    # Train model
-    model.fit(x_train, y_train, batch_size=5000, epochs=30, callbacks=[checkpoint_callback])
 
 if __name__ == "__main__":
     train_model()
