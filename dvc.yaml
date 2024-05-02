@@ -1,0 +1,37 @@
+stages:
+  load_data:
+    # REPLACE TRAIN_SAMPLE WITH TRAIN
+    cmd: python3 src/data_loader.py data/raw/train_sample.txt data/interim/loaded_data.txt
+    deps:
+      - src/data_loader.py
+      - data/raw/train.txt
+    outs:
+      - data/interim/loaded_data.txt
+
+  tokenize_data:
+    cmd: python3 src/preprocess.py data/interim/loaded_data.txt data/interim/tokenized_data.txt data/interim/tokenizer.json
+    deps:
+      - src/preprocess.py
+      - data/interim/loaded_data.txt
+    outs:
+      - data/interim/tokenized_data.txt
+      - data/interim/tokenizer.json
+
+  encode_labels:
+    cmd: python3 src/encode_labels.py data/interim/tokenized_data.txt data/interim/encoded_labels.txt
+    deps:
+      - src/encode_labels.py
+      - data/interim/tokenized_data.txt
+    outs:
+      - data/interim/encoded_labels.txt
+
+  train_model:
+    cmd: python3 src/train.py data/interim/tokenized_data.txt data/interim/encoded_labels.txt data/interim/tokenizer.json models/model.keras
+    deps:
+      - src/train.py
+      - src/model.py
+      - data/interim/tokenized_data.txt
+      - data/interim/encoded_labels.txt
+      - data/interim/tokenizer.json
+    outs:
+      - models/model.keras

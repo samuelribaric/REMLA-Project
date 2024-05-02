@@ -1,20 +1,23 @@
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from sklearn.preprocessing import LabelEncoder
+import sys
 
 def load_data(filepath):
+    """ Load data from a file into a list of lines. """
     with open(filepath, "r") as file:
         data = [line.strip() for line in file.readlines()]
     return data
 
-def preprocess_data(data, tokenizer=None, sequence_length=200):
-    if tokenizer is None:
-        tokenizer = Tokenizer(lower=True, char_level=True, oov_token='-n-')
-        tokenizer.fit_on_texts(data)
-    sequences = pad_sequences(tokenizer.texts_to_sequences(data), maxlen=sequence_length)
-    return sequences, tokenizer
+def save_data(data, filepath):
+    """ Save processed data back to a file. """
+    with open(filepath, "w") as file:
+        for item in data:
+            file.write(item + "\n")
 
-def encode_labels(labels):
-    encoder = LabelEncoder()
-    encoded_labels = encoder.fit_transform(labels)
-    return encoded_labels, encoder
+def main():
+    """ Entry point for the command-line interface. """
+    input_path = sys.argv[1]
+    output_path = sys.argv[2]
+    data = load_data(input_path)
+    save_data(data, output_path)
+
+if __name__ == "__main__":
+    main()

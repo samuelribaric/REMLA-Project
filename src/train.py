@@ -1,12 +1,23 @@
-from tensorflow.keras.callbacks import ModelCheckpoint
+import sys
+import json
+import numpy as np
 from model import build_model
-from data_loader import load_data, preprocess_data, encode_labels
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.preprocessing.text import tokenizer_from_json
 
-def train_model():
-    # Load and preprocess data
-    raw_train = load_data("data/train.txt")
-    x_train, tokenizer = preprocess_data([line.split("\t")[1] for line in raw_train])
-    y_train, encoder = encode_labels([line.split("\t")[0] for line in raw_train])
+def load_tokenizer(tokenizer_path):
+    with open(tokenizer_path) as f:
+        data = json.load(f)
+        tokenizer = tokenizer_from_json(data)
+    return tokenizer
+
+def train_model(tokenized_data_path, encoded_labels_path, tokenizer_path, model_path):
+    # Load data
+    x_train = np.loadtxt(tokenized_data_path, dtype=int)
+    y_train = np.loadtxt(encoded_labels_path, dtype=int)
+    
+    # Load tokenizer
+    tokenizer = load_tokenizer(tokenizer_path)
 
     # Build model
     voc_size = len(tokenizer.word_index.keys())
@@ -16,7 +27,7 @@ def train_model():
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
     # Setup model saving
-    checkpoint_callback = ModelCheckpoint('models/best_model.keras', save_best_only=True, monitor='val_loss')
+    checkpoint_callback = ModelCheckpoint(model_path, save_best_only=True, monitor='val_loss')
 
     # Print summary of model
     print(model.summary())
@@ -25,4 +36,9 @@ def train_model():
     model.fit(x_train, y_train, batch_size=5000, epochs=30, callbacks=[checkpoint_callback])
 
 if __name__ == "__main__":
-    train_model()
+    import sys
+    tokenized_data_path = sys.argv[1]
+    encoded_labels_path = sys.argv[2]
+    tokenizer_path = sys.argv[3]
+    model_path = sys.argv[4]
+    train_model(tokenized_data_path, encoded_labels_path, tokenizer_path, model_path)

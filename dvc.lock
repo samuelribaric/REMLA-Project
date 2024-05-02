@@ -1,0 +1,55 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python3 src/data_loader.py data/raw/train_sample.txt data/interim/loaded_data.txt
+    deps:
+    - path: data/raw/train.txt
+      hash: md5
+      md5: 13fd241a41370119612d5b00b0433009
+      size: 93921671
+    - path: src/data_loader.py
+      hash: md5
+      md5: a03d3c929a25cf1e05b8f94b9d7c458e
+      size: 619
+    outs:
+    - path: data/interim/loaded_data.txt
+      hash: md5
+      md5: aa3239d8309b0c915f6254a22a6fe55b
+      size: 4480205
+  tokenize_data:
+    cmd: python3 src/preprocess.py data/interim/loaded_data.txt data/interim/tokenized_data.txt
+      data/interim/tokenizer.json
+    deps:
+    - path: data/interim/loaded_data.txt
+      hash: md5
+      md5: aa3239d8309b0c915f6254a22a6fe55b
+      size: 4480205
+    - path: src/preprocess.py
+      hash: md5
+      md5: 65a1298032517c2c4077ec3bfeba6d89
+      size: 1273
+    outs:
+    - path: data/interim/tokenized_data.txt
+      hash: md5
+      md5: 9c87c2864f87847f3afcfc65919795c5
+      size: 22404263
+    - path: data/interim/tokenizer.json
+      hash: md5
+      md5: 5f066a05ec57f53559480553f25aed41
+      size: 6543
+  encode_labels:
+    cmd: python3 src/encode_labels.py data/interim/tokenized_data.txt data/interim/encoded_labels.txt
+    deps:
+    - path: data/interim/tokenized_data.txt
+      hash: md5
+      md5: 9c87c2864f87847f3afcfc65919795c5
+      size: 22404263
+    - path: src/encode_labels.py
+      hash: md5
+      md5: c3485a8596aa1d3b44c2c0ffb1a030c5
+      size: 1146
+    outs:
+    - path: data/interim/encoded_labels.txt
+      hash: md5
+      md5: 8af684ded3e6bfbc8d895b7dd7daf39d
+      size: 244452
