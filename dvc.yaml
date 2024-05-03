@@ -1,37 +1,62 @@
 stages:
-  load_data:
-    # REPLACE TRAIN_SAMPLE WITH TRAIN
-    cmd: python3 src/data_loader.py data/raw/train_sample.txt data/interim/loaded_data.txt
+  split_train_data:
+    cmd: python3 src/data_split.py data/raw/train.txt data/interim/train_features.txt data/interim/train_labels.txt
     deps:
-      - src/data_loader.py
+      - src/data_split.py
       - data/raw/train.txt
     outs:
-      - data/interim/loaded_data.txt
+      - data/interim/train_features.txt
+      - data/interim/train_labels.txt
 
-  tokenize_data:
-    cmd: python3 src/preprocess.py data/interim/loaded_data.txt data/interim/tokenized_data.txt data/interim/tokenizer.json
+  split_test_data:
+    cmd: python3 src/data_split.py data/raw/test.txt data/interim/test_features.txt data/interim/test_labels.txt
     deps:
-      - src/preprocess.py
-      - data/interim/loaded_data.txt
+      - src/data_split.py
+      - data/raw/test.txt
     outs:
-      - data/interim/tokenized_data.txt
-      - data/interim/tokenizer.json
+      - data/interim/test_features.txt
+      - data/interim/test_labels.txt
 
+  split_val_data:
+    cmd: python3 src/data_split.py data/raw/val.txt data/interim/val_features.txt data/interim/val_labels.txt
+    deps:
+      - src/data_split.py
+      - data/raw/val.txt
+    outs:
+      - data/interim/val_features.txt
+      - data/interim/val_labels.txt
+  
+  tokenize_features:
+    cmd: python3 src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt data/interim/test_features.txt
+    deps:
+      - src/tokenize_features.py
+      - data/interim/train_features.txt
+      - data/interim/val_features.txt
+      - data/interim/test_features.txt
+    outs:
+      - data/interim/tokenized_train.txt
+      - data/interim/tokenized_val.txt
+      - data/interim/tokenized_test.txt
+      - data/interim/tokenizer.json
+    
   encode_labels:
-    cmd: python3 src/encode_labels.py data/interim/tokenized_data.txt data/interim/encoded_labels.txt
+    cmd: python3 src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt data/interim/test_labels.txt
     deps:
       - src/encode_labels.py
-      - data/interim/tokenized_data.txt
+      - data/interim/train_labels.txt
+      - data/interim/val_labels.txt
+      - data/interim/test_labels.txt
     outs:
-      - data/interim/encoded_labels.txt
-
+      - data/interim/encoded_train_labels.txt
+      - data/interim/encoded_val_labels.txt
+      - data/interim/encoded_test_labels.txt
+  
   train_model:
-    cmd: python3 src/train.py data/interim/tokenized_data.txt data/interim/encoded_labels.txt data/interim/tokenizer.json models/model.keras
+    cmd: python3 src/train_model.py data/interim/tokenized_train.txt data/interim/encoded_train_labels.txt
     deps:
-      - src/train.py
-      - src/model.py
-      - data/interim/tokenized_data.txt
-      - data/interim/encoded_labels.txt
-      - data/interim/tokenizer.json
+      - src/train_model.py
+      - data/interim/tokenized_train.txt
+      - data/interim/encoded_train_labels.txt
+      - data/interim/tokenizer.json  # Dependency on the tokenizer for voc_size calculation
     outs:
-      - models/model.keras
+      - data/model/model.h5
