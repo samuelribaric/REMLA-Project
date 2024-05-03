@@ -30,8 +30,10 @@ def setup_dataset():
 
     # Download each file if not already downloaded
     for file_name, url in files.items():
-        local_path = os.path.join(extract_path, file_name)
-        download_file(url, local_path)
+        if not os.path.exists(os.path.join(extract_path, file_name)):
+            local_path = os.path.join(extract_path, file_name)
+            download_file(url, local_path)
+        else: print(f"File {file_name} already exists in /data, please delete existing data to download")
 
 if __name__ == "__main__":
     setup_dataset()
