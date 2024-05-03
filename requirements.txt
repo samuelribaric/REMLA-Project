@@ -6,5 +6,7 @@ scikit-learn
 matplotlib
 pylint
 dslinter
+requests
+tqdm
 dvc
 dvc-gdrive
