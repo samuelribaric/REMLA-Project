@@ -1,24 +1,23 @@
+"""
+This module handles the downloading of data files from remote URLs.
+"""
+
 import os
 import requests
-from tqdm import tqdm  
 
 def download_file(url, local_filename):
-    # Ensure the directory for the local_filename exists
-    os.makedirs(os.path.dirname(local_filename), exist_ok=True)
-
-    # Stream the download
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        total_size_in_bytes = int(r.headers.get('content-length', 0))
-        block_size = 1024  # 1 Kibibyte
-        progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
-        with open(local_filename, 'wb') as f:
-            for data in r.iter_content(block_size):
-                progress_bar.update(len(data))
-                f.write(data)
-        progress_bar.close()
-        if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-            print("ERROR, something went wrong")
+    """Downloads a file from a URL and saves it locally."""
+    if not os.path.exists(local_filename):
+        print(f"Downloading {local_filename}...")
+        with requests.get(url, stream=True, timeout=30) as response:
+            response.raise_for_status()
+            os.makedirs(os.path.dirname(local_filename), exist_ok=True)
+            with open(local_filename, 'wb') as file:
+                for chunk in response.iter_content(chunk_size=8192):
+                    file.write(chunk)
+        print(f"Downloaded the file: {local_filename}")
+    else:
+        print(f"File already exists: {local_filename}")
 
 def setup_dataset():
     files = {

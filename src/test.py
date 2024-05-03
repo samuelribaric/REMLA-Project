@@ -1,19 +1,21 @@
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-from tensorflow.keras.models import load_model
-from data_loader import load_and_preprocess_data
+"""
+This module tests the trained model on test data.
+"""
+
 import numpy as np
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from data_loader import load_and_preprocess_data
+from model import build_model
 
 def test_model():
-    file_path = {
-        'test': 'data/test.txt'
-    }
-    data, char_index = load_and_preprocess_data(file_path)
+    """Tests the saved model on the test dataset."""
+    file_paths = {'test': 'data/test.txt'}
+    data, char_index = load_and_preprocess_data(file_paths)
     x_test, y_test = data['test']
 
-    # Load the entire model from the .keras file
-    model = load_model("models/best_model.keras")
+    model = build_model(len(char_index), 2, input_length=x_test.shape[1])
+    model.load_weights("models/best_model.keras")
 
-    # Evaluate the model on the test set
     loss, accuracy = model.evaluate(x_test, y_test)
     print(f"Test accuracy: {accuracy}")
     print(f"Test loss: {loss}")
@@ -22,16 +24,13 @@ def test_model():
     y_pred_binary = (y_pred > 0.5).astype(int)
     y_test = y_test.reshape(-1, 1)
 
-    # Generate classification report
     report = classification_report(y_test, y_pred_binary)
     print('Classification Report:')
     print(report)
 
-    # Generate confusion matrix
     confusion_mat = confusion_matrix(y_test, y_pred_binary)
     print('Confusion Matrix:', confusion_mat)
     print('Accuracy:', accuracy_score(y_test, y_pred_binary))
-
 
 if __name__ == "__main__":
     test_model()

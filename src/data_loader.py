@@ -1,10 +1,15 @@
+"""
+This module provides functionality for loading and preprocessing data.
+"""
+from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from sklearn.preprocessing import LabelEncoder
-import numpy as np
-import pandas as pd
+
+
 
 def load_and_preprocess_data(file_paths):
+    """Loads data from a specified file path then Preprocesses text data by tokenizing 
+    and padding sequences and finally Encodes labels using label encoder"""
     data = {}
     tokenizer = Tokenizer(lower=True, char_level=True, oov_token='-n-')
     raw_data = []
@@ -29,11 +34,3 @@ def load_and_preprocess_data(file_paths):
 
     return data, tokenizer.word_index
 
-
-if __name__ == "__main__":
-    paths = {
-        'train': 'data/train.txt',
-        'test': 'data/test.txt',
-        'val': 'data/val.txt'
-    }
-    data, char_index = load_and_preprocess_data(paths)
