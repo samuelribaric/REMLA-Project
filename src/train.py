@@ -1,9 +1,11 @@
+"""Utility module for training the text classification model"""
+import os
+from keras.callbacks import ModelCheckpoint
 from data_loader import load_and_preprocess_data
 from model import build_model
-from keras.callbacks import ModelCheckpoint
-import os
 
 def train_model():
+    """Trains the classification model using training and validation datasets"""
     file_paths = {
         'train': 'data/train.txt',
         'val': 'data/val.txt'
@@ -22,7 +24,8 @@ def train_model():
         os.makedirs(checkpoint_dir)
 
     checkpoint_callback = ModelCheckpoint(checkpoint_path, save_best_only=True, monitor='val_loss', save_format='h5')
-    model.fit(x_train, y_train, batch_size=5000, epochs=30, validation_data=(x_val, y_val), callbacks=[checkpoint_callback])
+    model.fit(x_train, y_train, batch_size=5000, epochs=30, validation_data=(x_val, y_val),
+              callbacks=[checkpoint_callback])
 
     print(model.summary())
 
