@@ -6,7 +6,6 @@ import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from data_loader import load_and_preprocess_data
 from model import build_model
-
 def test_model():
     """Tests the saved model on the test dataset."""
     file_paths = {'test': 'data/test.txt'}

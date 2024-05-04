@@ -11,7 +11,6 @@ def train_model():
     """Trains the model on the training dataset."""
     file_paths = {
         'train': 'data/train.txt',
-        'test': 'data/test.txt',
         'val': 'data/val.txt'
     }
     data, char_index = load_and_preprocess_data(file_paths)
