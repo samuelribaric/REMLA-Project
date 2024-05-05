@@ -189,3 +189,86 @@ stages:
       hash: md5
       md5: 7b1e28b1e91582c6f36e85517c3cc6ee
       size: 46258330
+  train_model:
+    cmd: python src/train_model.py
+    deps:
+    - path: data/interim/encoded_train_labels.txt
+      hash: md5
+      md5: 9f7db0ed64bb77128caa33b3402f97b5
+      size: 3137322
+    - path: data/interim/encoded_val_labels.txt
+      hash: md5
+      md5: 36263c753dd478a0eb9165e9a5f988ae
+      size: 1545237
+    - path: data/interim/tokenized_train.txt
+      hash: md5
+      md5: ec5e6959c77d5c1770341f1ccad2dcbd
+      size: 466173135
+    - path: data/interim/tokenized_val.txt
+      hash: md5
+      md5: e182824b8fbed2204f74d4845ab48350
+      size: 229605840
+    - path: src/train_model.py
+      hash: md5
+      md5: 2da87996c3731f664d515528427205cc
+      size: 2352
+    params:
+      params.yaml:
+        batch_test: 5000
+        batch_train: 5000
+        categories:
+        - phishing
+        - legitimate
+        embedding_dimension: 50
+        epoch: 1
+        loss_function: binary_crossentropy
+        optimizer: adam
+    outs:
+    - path: loss_plot.svg
+      hash: md5
+      md5: 23a67025ab05a2f7f187e0cb6cdfc140
+      size: 22489
+    - path: metrics.json
+      hash: md5
+      md5: c3ca3ccf9b97120cb567cacbdcfec703
+      size: 136
+    - path: models/model.h5
+      hash: md5
+      md5: 3dbdc0ce64d375061a1bbb1a268d37d6
+      size: 5483616
+  test_model:
+    cmd: python src/test_model.py
+    deps:
+    - path: data/interim/test_features.txt
+      hash: md5
+      md5: 1563282b483d43739f43f425200044c5
+      size: 29407738
+    - path: data/interim/test_labels.txt
+      hash: md5
+      md5: 2e3c9d7f5cfbbbaa9ab11e95747c6b88
+      size: 4045450
+    - path: models/best_model.keras
+      hash: md5
+      md5: 0abe882e92de1e1ad31d035e5404dd8b
+      size: 5472086
+    - path: src/test_model.py
+      hash: md5
+      md5: b032838a636debd8443a4ce88e8c3907
+      size: 1571
+    outs:
+    - path: reports/classification_report.txt
+      hash: md5
+      md5: 34163a06bc8eeaa393c4493d37b4d5ca
+      size: 358
+    - path: reports/confusion_matrix.txt
+      hash: md5
+      md5: 942b71c0fd9b2a8494ae6250dad222ff
+      size: 54
+    - path: reports/test_accuracy.txt
+      hash: md5
+      md5: f34571f372f5b5f1f83b18e1e1be2c3c
+      size: 35
+    - path: reports/test_loss.txt
+      hash: md5
+      md5: a53929c73b51b04e2fac11219718804e
+      size: 32

@@ -48,7 +48,7 @@ def main(params):
 
     # Save model
     print("Training complete. Saving model...")
-    model.save('models/model.h5')
+    model.save('models/model.keras')
 
     # Save training metrics
     print("Saving training metrics...")
@@ -59,7 +59,7 @@ def main(params):
         'val_accuracy': hist.history['val_accuracy']
     }
 
-    with open('metrics.json', 'w') as f:
+    with open('reports/metrics.json', 'w') as f:
         json.dump(metrics, f)
 
     # Plot training metrics
@@ -69,7 +69,7 @@ def main(params):
     plt.plot(hist.history['val_loss'], label='Validation Loss')
     plt.title('Training and Validation Loss')
     plt.legend()
-    plt.savefig('loss_plot.svg')
+    plt.savefig('reports/loss_plot.svg')
     plt.close()
 
 if __name__ == "__main__":

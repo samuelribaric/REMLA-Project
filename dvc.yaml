@@ -79,6 +79,19 @@ stages:
     outs:
       - models/model.h5
     metrics:
-      - metrics.json
+      - reports/metrics.json
     plots:
-      - loss_plot.svg
+      - reports/loss_plot.svg
+    
+  test_model:
+    cmd: python src/test_model.py
+    deps:
+      - src/test_model.py
+      - data/interim/test_features.txt
+      - data/interim/test_labels.txt
+      - models/best_model.keras # SHOULD BE models/model.keras
+    outs:
+      - reports/test_accuracy.txt
+      - reports/test_loss.txt
+      - reports/classification_report.txt
+      - reports/confusion_matrix.txt
