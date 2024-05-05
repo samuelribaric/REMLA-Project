@@ -1,3 +1,21 @@
+# REMLA-Project
+
+## Poetry Stuff
+To install poetry follow the instructions on the [official website](https://python-poetry.org/docs). It's important that you do not install Poetry on the project's virtual environment!
+
+Use Python 3.10! It might be best if you remove your existing virtual environment before running the commands below (not sure however).
+
+Once the installation is complete, run the following commands:
+`where python` (for Windows) - Copy the path of Python 3.10
+`poetry env use PYTHON_PATH` - This should start installing packages already. If it doesn't, run: `poetry install`
+`poetry shell` - Activates the virtual environment. You can use other commands as you would before.
+
+To add a package to poetry use: `poetry add PACKAGE_NAME@version` (`@version` is optional).
+
+If you run into issues when installing TensorFlow, check your system path length limit (on Windows). Follow this [link](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/) to disable the path length limit.
+
+Please do not use `pip install package`. Poetry does not track dependencies when `pip install` is used. Instead use `poetry add package`.
+
 ###   Ensuring Code Quality with Pylint and DSLinter
 
 To maintain good code quality in our project, we have incorporated two linting tools into the development workflow: Pylint and DSLinter.
