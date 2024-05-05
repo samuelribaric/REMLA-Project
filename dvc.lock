@@ -38,40 +38,40 @@ stages:
       md5: ea5cccf92734d696eba432deb1dc68b8
       size: 6543
   encode_labels:
-    cmd: python3 src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt
+    cmd: python src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt
       data/interim/test_labels.txt
     deps:
     - path: data/interim/test_labels.txt
       hash: md5
-      md5: ee87127d4d350f71855f7645118a14e2
-      size: 3681252
+      md5: 2e3c9d7f5cfbbbaa9ab11e95747c6b88
+      size: 4045450
     - path: data/interim/train_labels.txt
       hash: md5
-      md5: a1baa255faeadb22c2b820464989699e
-      size: 10570508
+      md5: a2628fb8ca50c89fe1250772b8a50206
+      size: 11616282
     - path: data/interim/val_labels.txt
       hash: md5
-      md5: e1b4662a77e310d40d02a627f0a5e26c
-      size: 5206339
+      md5: 3c330979d7cb08758fcd9d6feaf6aa04
+      size: 5721418
     - path: src/encode_labels.py
       hash: md5
-      md5: 568b7942e11bb04bd00aa33d1c5ded96
-      size: 1224
+      md5: dac89efb2832e1e0f1e0fdcd1718dd96
+      size: 1256
     outs:
     - path: data/interim/encoded_test_labels.txt
       hash: md5
-      md5: 007f8877f2c5b4d9f90d235d7e03c1f9
-      size: 728396
+      md5: e63840a0a77819d56aa5405a746e5925
+      size: 1092594
     - path: data/interim/encoded_train_labels.txt
       hash: md5
-      md5: 3c9cb692e19bd045164e352003cc67e6
-      size: 2091548
+      md5: 9f7db0ed64bb77128caa33b3402f97b5
+      size: 3137322
     - path: data/interim/encoded_val_labels.txt
       hash: md5
-      md5: 410cc6b6c2e8f6a109fa103ae8b27665
-      size: 1030158
+      md5: 36263c753dd478a0eb9165e9a5f988ae
+      size: 1545237
   split_train_data:
-    cmd: python3 src/data_split.py data/raw/train.txt data/interim/train_features.txt
+    cmd: python src/data_split.py data/raw/train.txt data/interim/train_features.txt
       data/interim/train_labels.txt
     deps:
     - path: data/raw/train.txt
@@ -80,19 +80,19 @@ stages:
       size: 93921671
     - path: src/data_split.py
       hash: md5
-      md5: ee14f0c9ff3996ba3980aaf9eafa5d35
-      size: 942
+      md5: c06a0947ef4f354295f0d5582b305208
+      size: 968
     outs:
     - path: data/interim/train_features.txt
       hash: md5
-      md5: 761b3fe3977c171bc5451c08d217f9cb
-      size: 83350996
+      md5: e30e89161e21482d56537c6d0889db94
+      size: 84396770
     - path: data/interim/train_labels.txt
       hash: md5
-      md5: a1baa255faeadb22c2b820464989699e
-      size: 10570508
+      md5: a2628fb8ca50c89fe1250772b8a50206
+      size: 11616282
   split_test_data:
-    cmd: python3 src/data_split.py data/raw/test.txt data/interim/test_features.txt
+    cmd: python src/data_split.py data/raw/test.txt data/interim/test_features.txt
       data/interim/test_labels.txt
     deps:
     - path: data/raw/test.txt
@@ -101,20 +101,19 @@ stages:
       size: 32724891
     - path: src/data_split.py
       hash: md5
-      md5: ee14f0c9ff3996ba3980aaf9eafa5d35
-      size: 942
+      md5: c06a0947ef4f354295f0d5582b305208
+      size: 968
     outs:
     - path: data/interim/test_features.txt
       hash: md5
-      md5: 609e75fbf12e4f1ac9bdc1e40bf8c028
-      size: 29043540
+      md5: 1563282b483d43739f43f425200044c5
+      size: 29407738
     - path: data/interim/test_labels.txt
       hash: md5
-      md5: ee87127d4d350f71855f7645118a14e2
-      size: 3681252
+      md5: 2e3c9d7f5cfbbbaa9ab11e95747c6b88
+      size: 4045450
   split_val_data:
-    cmd: python3 src/data_split.py data/raw/val.txt data/interim/val_features.txt
-      data/interim/val_labels.txt
+    cmd: python src/data_split.py data/raw/val.txt data/interim/val_features.txt data/interim/val_labels.txt
     deps:
     - path: data/raw/val.txt
       hash: md5
@@ -122,51 +121,71 @@ stages:
       size: 46258330
     - path: src/data_split.py
       hash: md5
-      md5: ee14f0c9ff3996ba3980aaf9eafa5d35
-      size: 942
+      md5: c06a0947ef4f354295f0d5582b305208
+      size: 968
     outs:
     - path: data/interim/val_features.txt
       hash: md5
-      md5: c74e4e1c602207a00f9a7d0b6f5cd612
-      size: 41051954
+      md5: 7d004257a712e5265a5bd985aee42979
+      size: 41567033
     - path: data/interim/val_labels.txt
       hash: md5
-      md5: e1b4662a77e310d40d02a627f0a5e26c
-      size: 5206339
+      md5: 3c330979d7cb08758fcd9d6feaf6aa04
+      size: 5721418
   tokenize_features:
-    cmd: python3 src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt
+    cmd: python src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt
       data/interim/test_features.txt
     deps:
     - path: data/interim/test_features.txt
       hash: md5
-      md5: 609e75fbf12e4f1ac9bdc1e40bf8c028
-      size: 29043540
+      md5: 1563282b483d43739f43f425200044c5
+      size: 29407738
     - path: data/interim/train_features.txt
       hash: md5
-      md5: 761b3fe3977c171bc5451c08d217f9cb
-      size: 83350996
+      md5: e30e89161e21482d56537c6d0889db94
+      size: 84396770
     - path: data/interim/val_features.txt
       hash: md5
-      md5: c74e4e1c602207a00f9a7d0b6f5cd612
-      size: 41051954
+      md5: 7d004257a712e5265a5bd985aee42979
+      size: 41567033
     - path: src/tokenize_features.py
       hash: md5
-      md5: 5e318c2f8b21d9b97140f06f1d4eb1bf
-      size: 1607
+      md5: ba61bc4977e472612d7fd17189ebaf2c
+      size: 1604
     outs:
     - path: data/interim/tokenized_test.txt
       hash: md5
-      md5: 2baccef67e75786951222165a3233b90
-      size: 161985941
+      md5: 8edfd2cc3629bd6d67b3f652950dea09
+      size: 162350139
     - path: data/interim/tokenized_train.txt
       hash: md5
-      md5: 25c0b60a1a875a217ff8ed300c1e5288
-      size: 465127361
+      md5: ec5e6959c77d5c1770341f1ccad2dcbd
+      size: 466173135
     - path: data/interim/tokenized_val.txt
       hash: md5
-      md5: 509a8b29d340e3a4478b036197fda971
-      size: 229090761
-    - path: data/interim/tokenizer.json
+      md5: e182824b8fbed2204f74d4845ab48350
+      size: 229605840
+    - path: data/interim/tokenizer.pkl
       hash: md5
-      md5: dec0f3a95fe83b6297c84e9349dc4afb
-      size: 7180
+      md5: a6acd95dd7331b24cbc2fe471446556f
+      size: 2425
+  download_data:
+    cmd: python src/data_downloader.py
+    deps:
+    - path: src/data_downloader.py
+      hash: md5
+      md5: 5a682a5c09b30709fa9815ba8618c549
+      size: 1586
+    outs:
+    - path: data/raw/test.txt
+      hash: md5
+      md5: a1cab28ad8554fd9269d31e5708469d0
+      size: 32724891
+    - path: data/raw/train.txt
+      hash: md5
+      md5: 13fd241a41370119612d5b00b0433009
+      size: 93921671
+    - path: data/raw/val.txt
+      hash: md5
+      md5: 7b1e28b1e91582c6f36e85517c3cc6ee
+      size: 46258330

@@ -25,14 +25,13 @@ def setup_dataset():
         "train.txt": "https://www.dropbox.com/scl/fi/jbp08vjics0gs7r1xon3u/train.txt?rlkey=iq33sint89mtsutixm96mwckz&st=6ewkvofq&dl=1",
         "val.txt": "https://www.dropbox.com/scl/fi/uf9xiu7g1rvz3s9zelptj/val.txt?rlkey=d3pxdkn5hrr4yl7w45g7a9jh1&st=93kugzky&dl=1"
     }
-    extract_path = "data/"
+    extract_path = "data/raw/"
 
     # Download each file if not already downloaded
     for file_name, url in files.items():
         if not os.path.exists(os.path.join(extract_path, file_name)):
             local_path = os.path.join(extract_path, file_name)
             download_file(url, local_path)
-        else: print(f"File {file_name} already exists in /data, please delete existing data to download")
 
 if __name__ == "__main__":
     setup_dataset()

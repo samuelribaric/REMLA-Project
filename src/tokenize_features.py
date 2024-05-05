@@ -1,5 +1,6 @@
 import sys
 import json
+import pickle
 import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -27,10 +28,9 @@ def tokenize_features(train_path, val_path, test_path, sequence_length=200):
     np.savetxt("data/interim/tokenized_val.txt", x_val, fmt='%d')
     np.savetxt("data/interim/tokenized_test.txt", x_test, fmt='%d')
 
-    # Save the tokenizer as JSON
-    tokenizer_json = tokenizer.to_json()
-    with open("data/interim/tokenizer.json", 'w') as file:
-        file.write(json.dumps(tokenizer_json))
+    # Save the tokenizer
+    with open("data/interim/tokenizer.pkl", 'wb') as file:
+        pickle.dump(tokenizer, file)
 
 def main():
     train_path = sys.argv[1]

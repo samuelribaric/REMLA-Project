@@ -1,6 +1,15 @@
 stages:
+  download_data:
+    cmd: python src/data_downloader.py
+    deps:
+      - src/data_downloader.py
+    outs:
+      - data/raw/test.txt
+      - data/raw/train.txt
+      - data/raw/val.txt
+
   split_train_data:
-    cmd: python3 src/data_split.py data/raw/train.txt data/interim/train_features.txt data/interim/train_labels.txt
+    cmd: python src/data_split.py data/raw/train.txt data/interim/train_features.txt data/interim/train_labels.txt
     deps:
       - src/data_split.py
       - data/raw/train.txt
@@ -9,7 +18,7 @@ stages:
       - data/interim/train_labels.txt
 
   split_test_data:
-    cmd: python3 src/data_split.py data/raw/test.txt data/interim/test_features.txt data/interim/test_labels.txt
+    cmd: python src/data_split.py data/raw/test.txt data/interim/test_features.txt data/interim/test_labels.txt
     deps:
       - src/data_split.py
       - data/raw/test.txt
@@ -18,7 +27,7 @@ stages:
       - data/interim/test_labels.txt
 
   split_val_data:
-    cmd: python3 src/data_split.py data/raw/val.txt data/interim/val_features.txt data/interim/val_labels.txt
+    cmd: python src/data_split.py data/raw/val.txt data/interim/val_features.txt data/interim/val_labels.txt
     deps:
       - src/data_split.py
       - data/raw/val.txt
@@ -27,7 +36,7 @@ stages:
       - data/interim/val_labels.txt
   
   tokenize_features:
-    cmd: python3 src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt data/interim/test_features.txt
+    cmd: python src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt data/interim/test_features.txt
     deps:
       - src/tokenize_features.py
       - data/interim/train_features.txt
@@ -37,10 +46,10 @@ stages:
       - data/interim/tokenized_train.txt
       - data/interim/tokenized_val.txt
       - data/interim/tokenized_test.txt
-      - data/interim/tokenizer.json
+      - data/interim/tokenizer.pkl
     
   encode_labels:
-    cmd: python3 src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt data/interim/test_labels.txt
+    cmd: python src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt data/interim/test_labels.txt
     deps:
       - src/encode_labels.py
       - data/interim/train_labels.txt
@@ -52,11 +61,24 @@ stages:
       - data/interim/encoded_test_labels.txt
   
   train_model:
-    cmd: python3 src/train_model.py data/interim/tokenized_train.txt data/interim/encoded_train_labels.txt
+    cmd: python src/train_model.py
     deps:
       - src/train_model.py
       - data/interim/tokenized_train.txt
+      - data/interim/tokenized_val.txt
       - data/interim/encoded_train_labels.txt
-      - data/interim/tokenizer.json  # Dependency on the tokenizer for voc_size calculation
+      - data/interim/encoded_val_labels.txt
+    params:
+      - loss_function
+      - optimizer
+      - batch_train
+      - batch_test
+      - categories
+      - epoch
+      - embedding_dimension
     outs:
-      - data/model/model.h5
+      - models/model.h5
+    metrics:
+      - metrics.json
+    plots:
+      - loss_plot.svg

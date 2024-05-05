@@ -1,62 +1,78 @@
-import sys
+import json
+import yaml
+import pickle
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Embedding, Conv1D, MaxPooling1D, Dropout
-from keras.optimizers import Adam
-from keras.losses import BinaryCrossentropy
+import matplotlib.pyplot as plt
+from model import create_model
+import keras
 
-def load_data(filepath):
-    return np.loadtxt(filepath, dtype=int)
+def load_data():
+    # Load tokenized features
+    x_train = np.loadtxt('data/interim/tokenized_train.txt', dtype=int)
+    x_val = np.loadtxt('data/interim/tokenized_val.txt', dtype=int)
 
-def train_model(params, x_train_path, y_train_path):
-    # Load training data
-    x_train = load_data(x_train_path)
-    y_train = load_data(y_train_path)
-    
-    # Model architecture
-    model = Sequential()
-    model.add(Embedding(params['voc_size'] + 1, params['embedding_dimension'])) # CHECK
+    # Load encoded labels
+    y_train = np.loadtxt('data/interim/encoded_train_labels.txt', dtype=int)
+    y_val = np.loadtxt('data/interim/encoded_val_labels.txt', dtype=int)
 
-    model.add(Conv1D(128, 3, activation='tanh'))
-    model.add(MaxPooling1D(3))
-    model.add(Dropout(0.2))
+    # Load tokenizer
+    with open('data/interim/tokenizer.pkl', 'rb') as file:
+        tokenizer = pickle.load(file)
 
-    model.add(Conv1D(128, 7, activation='tanh', padding='same'))
-    model.add(Dropout(0.2))
+    return x_train, y_train, x_val, y_val, tokenizer
 
-    model.add(Conv1D(128, 5, activation='tanh', padding='same'))
-    model.add(Dropout(0.2))
+def main(params):
+    print("Loading data...")
+    x_train, y_train, x_val, y_val, tokenizer = load_data()
 
-    model.add(Conv1D(128, 3, activation='tanh', padding='same'))
-    model.add(MaxPooling1D(3))
-    model.add(Dropout(0.2))
+    print("Data loaded. Building model...")
+    char_index = tokenizer.word_index
+    voc_size =  len(char_index.keys())
+    model = create_model(voc_size, len(params['categories']))
 
-    model.add(Conv1D(128, 5, activation='tanh', padding='same'))
-    model.add(Dropout(0.2))
+    print("Model built. Compiling model...")
+    model.compile(
+        loss=params['loss_function'],
+        optimizer=params['optimizer'],
+        metrics=['accuracy']
+    )
 
-    model.add(Conv1D(128, 3, activation='tanh'))
-
-    # Compile model
-    model.compile(optimizer=params['optimizer'], loss=params['loss_function'])
-
-    # Train model
-    model.fit(x_train, y_train, batch_size=params['batch_train'], epochs=params['epoch'])
+    print("Model compiled. Starting training...")
+    hist = model.fit(
+        x_train, y_train,
+        batch_size=params['batch_train'],
+        epochs=params['epoch'],
+        shuffle=True,
+        validation_data=(x_val, y_val)
+    )
 
     # Save model
+    print("Training complete. Saving model...")
     model.save('models/model.h5')
 
-def main():
-    params = {
-        'loss_function': 'binary_crossentropy',
-        'optimizer': 'adam',
-        'embedding_dimension': 50,
-        'batch_train': 5000,
-        'epoch': 30,
-        'voc_size': len(open('data/interim/tokenizer.json').read())  # Update this to properly count vocabulary
+    # Save training metrics
+    print("Saving training metrics...")
+    metrics = {
+        'loss': hist.history['loss'],
+        'accuracy': hist.history['accuracy'],
+        'val_loss': hist.history['val_loss'],
+        'val_accuracy': hist.history['val_accuracy']
     }
-    x_train_path = sys.argv[1]
-    y_train_path = sys.argv[2]
-    train_model(params, x_train_path, y_train_path)
+
+    with open('metrics.json', 'w') as f:
+        json.dump(metrics, f)
+
+    # Plot training metrics
+    print("Plotting training metrics...")
+    plt.figure()
+    plt.plot(hist.history['loss'], label='Training Loss')
+    plt.plot(hist.history['val_loss'], label='Validation Loss')
+    plt.title('Training and Validation Loss')
+    plt.legend()
+    plt.savefig('loss_plot.svg')
+    plt.close()
 
 if __name__ == "__main__":
-    main()
+    with open("params.yaml", 'r') as file:
+        params = yaml.safe_load(file)
+    main(params)
