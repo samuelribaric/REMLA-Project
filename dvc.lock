@@ -167,7 +167,7 @@ stages:
       size: 229605840
     - path: data/interim/tokenizer.pkl
       hash: md5
-      md5: a6acd95dd7331b24cbc2fe471446556f
+      md5: 88d4130a572e77740cb1e20a83351789
       size: 2425
   download_data:
     cmd: python src/data_downloader.py
@@ -210,8 +210,8 @@ stages:
       size: 229605840
     - path: src/train_model.py
       hash: md5
-      md5: 2da87996c3731f664d515528427205cc
-      size: 2352
+      md5: d27e13e4e31fc1b48dcbfa53a64ee610
+      size: 2371
     params:
       params.yaml:
         batch_test: 5000
@@ -224,18 +224,18 @@ stages:
         loss_function: binary_crossentropy
         optimizer: adam
     outs:
-    - path: loss_plot.svg
+    - path: models/model.keras
       hash: md5
-      md5: 23a67025ab05a2f7f187e0cb6cdfc140
-      size: 22489
-    - path: metrics.json
+      md5: b0bcae0ad892056187c4715ddd848d14
+      size: 5473035
+    - path: reports/loss_plot.svg
       hash: md5
-      md5: c3ca3ccf9b97120cb567cacbdcfec703
-      size: 136
-    - path: models/model.h5
+      md5: e650368b39800b8128da5ed137e4e191
+      size: 23748
+    - path: reports/metrics.json
       hash: md5
-      md5: 3dbdc0ce64d375061a1bbb1a268d37d6
-      size: 5483616
+      md5: 4c0e835d10053d7e05fca295d78c0729
+      size: 137
   test_model:
     cmd: python src/test_model.py
     deps:

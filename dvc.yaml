@@ -77,7 +77,7 @@ stages:
       - epoch
       - embedding_dimension
     outs:
-      - models/model.h5
+      - models/model.keras
     metrics:
       - reports/metrics.json
     plots:
