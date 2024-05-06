@@ -1,9 +1,10 @@
+"""Utility module for testing model on the test dataset"""
 import numpy as np
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-import os
 
 def load_test_data():
+    """Loads test data from interim files"""
     x_test = np.loadtxt('data/interim/tokenized_test.txt', dtype=int)
     y_test = np.loadtxt('data/interim/encoded_test_labels.txt', dtype=int)
     return x_test, y_test
@@ -22,21 +23,21 @@ def test_model():
     y_pred_binary = (y_pred > 0.5).astype(int)
 
     # Save reports to files
-    with open('reports/test_accuracy.txt', 'w') as f:
-        f.write(f"Test accuracy: {accuracy}\n")
+    with open('reports/test_accuracy.txt', 'w', encoding="utf-8") as file:
+        file.write(f"Test accuracy: {accuracy}\n")
 
-    with open('reports/test_loss.txt', 'w') as f:
-        f.write(f"Test loss: {loss}\n")
+    with open('reports/test_loss.txt', 'w', encoding="utf-8") as file:
+        file.write(f"Test loss: {loss}\n")
 
     report = classification_report(y_test, y_pred_binary)
-    with open('reports/classification_report.txt', 'w') as f:
-        f.write('Classification Report:\n')
-        f.write(report)
+    with open('reports/classification_report.txt', 'w', encoding="utf-8") as file:
+        file.write('Classification Report:\n')
+        file.write(report)
 
     confusion_mat = confusion_matrix(y_test, y_pred_binary)
-    with open('reports/confusion_matrix.txt', 'w') as f:
-        f.write('Confusion Matrix:\n')
-        f.write(str(confusion_mat))
+    with open('reports/confusion_matrix.txt', 'w', encoding="utf-8") as file:
+        file.write('Confusion Matrix:\n')
+        file.write(str(confusion_mat))
 
     print('Classification Report:')
     print(report)

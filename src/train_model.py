@@ -1,12 +1,13 @@
+"""Utility module for training the model with specific parameters"""
 import json
-import yaml
 import pickle
+import yaml
 import numpy as np
 import matplotlib.pyplot as plt
 from model import create_model
-import keras
 
 def load_data():
+    """Loads training and validation data along with tokenizer"""
     # Load tokenized features
     x_train = np.loadtxt('data/interim/tokenized_train.txt', dtype=int)
     x_val = np.loadtxt('data/interim/tokenized_val.txt', dtype=int)
@@ -16,12 +17,13 @@ def load_data():
     y_val = np.loadtxt('data/interim/encoded_val_labels.txt', dtype=int)
 
     # Load tokenizer
-    with open('data/interim/tokenizer.pkl', 'rb') as file:
-        tokenizer = pickle.load(file)
+    with open('data/interim/tokenizer.pkl', 'rb') as token_file:
+        tokenizer = pickle.load(token_file)
 
     return x_train, y_train, x_val, y_val, tokenizer
 
-def main(params):
+def main(parameters):
+    """insert method docstring here"""
     print("Loading data...")
     x_train, y_train, x_val, y_val, tokenizer = load_data()
 
@@ -29,20 +31,20 @@ def main(params):
     char_index = tokenizer.word_index
     voc_size =  len(char_index.keys())
     input_length = x_train.shape[1]
-    model = create_model(voc_size, len(params['categories']), input_length)
+    model = create_model(voc_size, len(parameters['categories']), input_length)
 
     print("Model built. Compiling model...")
     model.compile(
-        loss=params['loss_function'],
-        optimizer=params['optimizer'],
+        loss=parameters['loss_function'],
+        optimizer=parameters['optimizer'],
         metrics=['accuracy']
     )
 
     print("Model compiled. Starting training...")
     hist = model.fit(
         x_train, y_train,
-        batch_size=params['batch_train'],
-        epochs=params['epoch'],
+        batch_size=parameters['batch_train'],
+        epochs=parameters['epoch'],
         shuffle=True,
         validation_data=(x_val, y_val)
     )
@@ -60,8 +62,8 @@ def main(params):
         'val_accuracy': hist.history['val_accuracy']
     }
 
-    with open('reports/metrics.json', 'w') as f:
-        json.dump(metrics, f)
+    with open('reports/metrics.json', 'w', encoding="utf-8") as metrics_file:
+        json.dump(metrics, metrics_file)
 
     # Plot training metrics
     print("Plotting training metrics...")
@@ -74,6 +76,6 @@ def main(params):
     plt.close()
 
 if __name__ == "__main__":
-    with open("params.yaml", 'r') as file:
+    with open("params.yaml", 'r', encoding="utf-8") as file:
         params = yaml.safe_load(file)
     main(params)

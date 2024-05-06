@@ -39,4 +39,3 @@ if __name__ == "__main__":
         'val': 'data/val.txt'
     }
     data, char_index = load_and_preprocess_data(paths)
-
