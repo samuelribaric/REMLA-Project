@@ -1,22 +1,79 @@
 # REMLA-Project
 
-## Poetry Stuff
-To install poetry follow the instructions on the [official website](https://python-poetry.org/docs). It's important that you do not install Poetry on the project's virtual environment!
+Welcome to the REMLA-Project repository! This project is designed to utilize an automoated pipeline to deploy a neural network classifier that predicts phising URLs. Here, you'll find all the necessary steps to get the project up and running.
 
-Use Python 3.10! It might be best if you remove your existing virtual environment before running the commands below (not sure however).
+### 1. Clone the repository
+```bash
+git clone git@github.com:samuelribaric/REMLA-Project.git
+```
 
-Once the installation is complete, run the following commands:
-`where python` (for Windows) - Copy the path of Python 3.10
-`poetry env use PYTHON_PATH` - This should start installing packages already. If it doesn't, run: `poetry install`
-`poetry shell` - Activates the virtual environment. You can use other commands as you would before.
+### 2. Navigate to the project directory
+```bash
+cd REMLA-Project
+```
 
-To add a package to poetry use: `poetry add PACKAGE_NAME@version` (`@version` is optional).
+### 3. Install Poetry
+To manage dependencies efficiently, we use Poetry. Install it by following the instructions on the [official Poetry website](https://python-poetry.org/docs/#installation). Ensure that Poetry is not installed within the project's virtual environment but globally or per user.
 
-If you run into issues when installing TensorFlow, check your system path length limit (on Windows). Follow this [link](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/) to disable the path length limit.
+### 4. Setting Up the Environment with Poetry
+Once Poetry is installed, you can set up the project environment:
 
-Please do not use `pip install package`. Poetry does not track dependencies when `pip install` is used. Instead use `poetry add package`.
+#### Note! Use Python 3.10, it might be best if you remove your existing virtual environment before running the commands below. Please do not use `pip install package`. Poetry does not track dependencies when `pip install` is used. Instead use `poetry add package` to add additional packages to poetry.
 
-###   Ensuring Code Quality with Pylint and DSLinter
+```bash
+poetry env use python3.10
+```
+
+#### Alternative approach:
+```bash
+where python (for Windows) - Copy the path of Python 3.10
+where python3 (for Mac)
+poetry env use PYTHON_PATH - This should start installing packages already. If it doesn't, run: 'poetry install'
+```
+
+#### Install necessary dependencies
+```bash
+poetry install
+```
+
+#### Activate the virtual environment
+```bash
+poetry shell
+```
+
+### 5. Bind to the DVC Remote Storage
+To manage and version control large data files and models, we use Data Version Control (DVC):
+
+#### Initialize DVC (if not already done)
+```bash
+poetry run dvc init
+```
+
+#### Pull data from the DVC remote storage
+```bash
+poetry run dvc pull
+```
+
+### 6. Running the Project
+To run the project and reproduce all stages defined in `dvc.yaml`:
+
+```bash
+poetry run dvc repro
+```
+
+You can also run a specific stage with:
+
+```bash
+poetry run dvc repro <stage_name>
+```
+
+
+## Project Structure
+
+The project follows a structured pipeline for data processing and model training, as detailed in `pipeline.md` located in the docs directory.
+
+
+##   Ensuring Code Quality with Pylint and DSLinter
 
 To maintain good code quality in our project, we have incorporated two linting tools into the development workflow: Pylint and DSLinter.
 
