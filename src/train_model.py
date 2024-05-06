@@ -28,7 +28,8 @@ def main(params):
     print("Data loaded. Building model...")
     char_index = tokenizer.word_index
     voc_size =  len(char_index.keys())
-    model = create_model(voc_size, len(params['categories']))
+    input_length = x_train.shape[1]
+    model = create_model(voc_size, len(params['categories']), input_length)
 
     print("Model built. Compiling model...")
     model.compile(
