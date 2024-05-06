@@ -1,11 +1,10 @@
-"""Utility module for building the CNN model"""
+import keras
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten
+from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense, Dropout
 
-def build_model(voc_size, num_categories):
-    """Builds a convolutional neural network model for text classification"""
+def create_model(voc_size, num_categories, input_length):
     model = Sequential()
-    model.add(Embedding(voc_size + 1, 50))
+    model.add(Embedding(voc_size + 1, 50, input_length=input_length))
 
     model.add(Conv1D(128, 3, activation='tanh'))
     model.add(MaxPooling1D(3))
@@ -33,7 +32,6 @@ def build_model(voc_size, num_categories):
     model.add(Dropout(0.2))
 
     model.add(Flatten())
-
+    
     model.add(Dense(num_categories - 1, activation='sigmoid'))
-
     return model

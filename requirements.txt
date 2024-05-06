@@ -8,3 +8,5 @@ pylint
 dslinter
 requests
 tqdm
+dvc
+dvc-gdrive
