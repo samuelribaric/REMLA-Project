@@ -2,9 +2,9 @@ import keras
 from keras.models import Sequential
 from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense, Dropout
 
-def create_model(voc_size, num_categories):
+def create_model(voc_size, num_categories, input_length):
     model = Sequential()
-    model.add(Embedding(voc_size + 1, 50))
+    model.add(Embedding(voc_size + 1, 50, input_length=input_length))
 
     model.add(Conv1D(128, 3, activation='tanh'))
     model.add(MaxPooling1D(3))

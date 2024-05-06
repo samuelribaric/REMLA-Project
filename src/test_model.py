@@ -12,7 +12,7 @@ def test_model():
     """Tests the saved model on the test dataset."""
     x_test, y_test = load_test_data()
 
-    model = load_model("models/best_model.keras")
+    model = load_model("models/model.keras")
 
     loss, accuracy = model.evaluate(x_test, y_test)
     print(f"Test accuracy: {accuracy}")
