@@ -1,6 +1,6 @@
 A1
 
--- Giovanni: --
+-- Giovanni --
 Created PR: https://github.com/samuelribaric/REMLA-Project/pull/1
 Created PR: https://github.com/samuelribaric/REMLA-Project/pull/3
 Created PR: https://github.com/samuelribaric/REMLA-Project/pull/9
@@ -21,3 +21,9 @@ Created PR: https://github.com/samuelribaric/REMLA-Project/pull/16
 Approved PR: https://github.com/samuelribaric/REMLA-Project/pull/5
 Approved PR: https://github.com/samuelribaric/REMLA-Project/pull/13
 Approved PR: https://github.com/samuelribaric/REMLA-Project/pull/7
+
+-- Daniel --
+Created PR: https://github.com/samuelribaric/REMLA-Project/pull/5
+Approved PR: https://github.com/samuelribaric/REMLA-Project/pull/15
+Approved PR: https://github.com/samuelribaric/REMLA-Project/pull/14
+Approved PR: https://github.com/samuelribaric/REMLA-Project/pull/2
