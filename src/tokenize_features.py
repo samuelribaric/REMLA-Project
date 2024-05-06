@@ -1,17 +1,18 @@
+"""import module docstring here"""
 import sys
-import json
 import pickle
 import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 def tokenize_features(train_path, val_path, test_path, sequence_length=200):
+    """import method docstring here"""
     # Load feature data
-    with open(train_path, 'r') as file:
+    with open(train_path, 'r', encoding="utf-8") as file:
         train_features = file.readlines()
-    with open(val_path, 'r') as file:
+    with open(val_path, 'r', encoding="utf-8") as file:
         val_features = file.readlines()
-    with open(test_path, 'r') as file:
+    with open(test_path, 'r', encoding="utf-8") as file:
         test_features = file.readlines()
 
     # Initialize tokenizer
@@ -29,10 +30,11 @@ def tokenize_features(train_path, val_path, test_path, sequence_length=200):
     np.savetxt("data/interim/tokenized_test.txt", x_test, fmt='%d')
 
     # Save the tokenizer
-    with open("data/interim/tokenizer.pkl", 'wb') as file:
+    with open("data/interim/tokenizer.pkl", 'wb', encoding="utf-8") as file:
         pickle.dump(tokenizer, file)
 
 def main():
+    """import method docstring here"""
     train_path = sys.argv[1]
     val_path = sys.argv[2]
     test_path = sys.argv[3]
