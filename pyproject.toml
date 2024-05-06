@@ -16,6 +16,10 @@ scikit-learn = "^1.4.2"
 matplotlib = "^3.8.4"
 dvc = "^3.50.1"
 dvc-gdrive = "^3.0.1"
+dslinter = "^2.0.9"
+pylint = "2.12.2"
+requests = "^2.31.0"
+tqdm = "^4.66.4"
 
 
 [build-system]

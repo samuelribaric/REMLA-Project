@@ -36,6 +36,9 @@ poetry env use PYTHON_PATH - This should start installing packages already. If i
 poetry install
 ```
 
+##### Possible Problems During Depency Installation
+If you run into issues when installing TensorFlow, check your system path length limit (on Windows). Follow this [link](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/) to disable the path length limit.
+
 #### Activate the virtual environment
 ```bash
 poetry shell
