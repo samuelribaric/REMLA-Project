@@ -1,13 +1,14 @@
+"""Utility module for testing a trained model"""
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from tensorflow.keras.models import load_model
 from data_loader import load_and_preprocess_data
-import numpy as np
 
 def test_model():
+    """Loads a trained model and evaluates its performance on the test dataset."""
     file_path = {
         'test': 'data/test.txt'
     }
-    data, char_index = load_and_preprocess_data(file_path)
+    data, _ = load_and_preprocess_data(file_path)
     x_test, y_test = data['test']
 
     # Load the entire model from the .keras file
