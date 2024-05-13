@@ -34,7 +34,7 @@ stages:
     outs:
       - data/interim/val_features.txt
       - data/interim/val_labels.txt
-  
+
   tokenize_features:
     cmd: python src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt data/interim/test_features.txt
     deps:
@@ -47,7 +47,7 @@ stages:
       - data/interim/tokenized_val.txt
       - data/interim/tokenized_test.txt
       - data/interim/tokenizer.pkl
-    
+
   encode_labels:
     cmd: python src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt data/interim/test_labels.txt
     deps:
@@ -59,7 +59,7 @@ stages:
       - data/interim/encoded_train_labels.txt
       - data/interim/encoded_val_labels.txt
       - data/interim/encoded_test_labels.txt
-  
+
   train_model:
     cmd: python src/train_model.py
     deps:
@@ -82,14 +82,24 @@ stages:
       - reports/metrics.json
     plots:
       - reports/loss_plot.svg
-    
+
+  upload_model:
+    cmd: gsutil cp models/model.keras gs://remla_group_9_model/models.keras
+    deps:
+      - models/model.keras
+
+  upload_tokenizer:
+    cmd: gsutil cp data/interim/tokenizer.pkl gs://remla_group_9_model/tokenizer.pkl
+    deps:
+      - data/interim/tokenizer.pkl
+
   test_model:
     cmd: python src/test_model.py
     deps:
       - src/test_model.py
       - data/interim/test_features.txt
       - data/interim/test_labels.txt
-      - models/best_model.keras # SHOULD BE models/model.keras
+      - models/model.keras # SHOULD BE models/model.keras
     outs:
       - reports/test_accuracy.txt
       - reports/test_loss.txt

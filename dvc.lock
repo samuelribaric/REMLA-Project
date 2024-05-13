@@ -55,8 +55,8 @@ stages:
       size: 5206339
     - path: src/encode_labels.py
       hash: md5
-      md5: 568b7942e11bb04bd00aa33d1c5ded96
-      size: 1224
+      md5: 3c973663447cff340999822209549aac
+      size: 1526
     outs:
     - path: data/interim/encoded_test_labels.txt
       hash: md5
@@ -80,8 +80,8 @@ stages:
       size: 93921671
     - path: src/data_split.py
       hash: md5
-      md5: ee14f0c9ff3996ba3980aaf9eafa5d35
-      size: 942
+      md5: f3af203f622eaff800ad537be693f073
+      size: 1285
     outs:
     - path: data/interim/train_features.txt
       hash: md5
@@ -101,8 +101,8 @@ stages:
       size: 32724891
     - path: src/data_split.py
       hash: md5
-      md5: ee14f0c9ff3996ba3980aaf9eafa5d35
-      size: 942
+      md5: f3af203f622eaff800ad537be693f073
+      size: 1285
     outs:
     - path: data/interim/test_features.txt
       hash: md5
@@ -121,8 +121,8 @@ stages:
       size: 46258330
     - path: src/data_split.py
       hash: md5
-      md5: ee14f0c9ff3996ba3980aaf9eafa5d35
-      size: 942
+      md5: f3af203f622eaff800ad537be693f073
+      size: 1285
     outs:
     - path: data/interim/val_features.txt
       hash: md5
@@ -150,8 +150,8 @@ stages:
       size: 41051954
     - path: src/tokenize_features.py
       hash: md5
-      md5: a470d5f82b0f99aaddac3dfa67275277
-      size: 1562
+      md5: a620a1c112faf8712c3cb9bb21ad97b6
+      size: 1779
     outs:
     - path: data/interim/tokenized_test.txt
       hash: md5
@@ -167,15 +167,15 @@ stages:
       size: 229090761
     - path: data/interim/tokenizer.pkl
       hash: md5
-      md5: e7df067c1e0e925a88e63ff16c8b6228
+      md5: 94278e3c7a195616ed3f0cd3b9721b79
       size: 2402
   download_data:
     cmd: python src/data_downloader.py
     deps:
     - path: src/data_downloader.py
       hash: md5
-      md5: b6ab00ac0af65de5ecaad165cf64d03a
-      size: 1550
+      md5: 76dd472e51f64948f2d790ed1411f8ac
+      size: 1722
     outs:
     - path: data/raw/test.txt
       hash: md5
@@ -210,8 +210,8 @@ stages:
       size: 229090761
     - path: src/train_model.py
       hash: md5
-      md5: fc0c55e89136dac451299c809a4d65d0
-      size: 2343
+      md5: f3c777b242c5ccc18fd00b0c0c5d8d43
+      size: 2598
     params:
       params.yaml:
         batch_test: 5000
@@ -226,15 +226,15 @@ stages:
     outs:
     - path: models/model.keras
       hash: md5
-      md5: fc44d16fbe5a65c32299c539cbb8b690
+      md5: 57e7a6418e2ee972ef12d8eadc6a33c0
       size: 5493632
     - path: reports/loss_plot.svg
       hash: md5
-      md5: 85713170db6370197dd958529a4cfc44
-      size: 21680
+      md5: 66cdab359c025b04814e8d5ddaa1a328
+      size: 22215
     - path: reports/metrics.json
       hash: md5
-      md5: 454acd2645ac9e7a5bb21e57a50fbfc6
+      md5: 21397552ae979493fbff559dac96b63c
       size: 137
   test_model:
     cmd: python src/test_model.py
@@ -247,28 +247,42 @@ stages:
       hash: md5
       md5: ee87127d4d350f71855f7645118a14e2
       size: 3681252
-    - path: models/best_model.keras
+    - path: models/model.keras
       hash: md5
-      md5: 0abe882e92de1e1ad31d035e5404dd8b
-      size: 5472086
+      md5: 57e7a6418e2ee972ef12d8eadc6a33c0
+      size: 5493632
     - path: src/test_model.py
       hash: md5
-      md5: 59e0a529913014f5b40d868375c5ba30
-      size: 1519
+      md5: f90cd2ab04366759e8d257ca52f0d94d
+      size: 1715
     outs:
     - path: reports/classification_report.txt
       hash: md5
-      md5: 8c819104d1e89faf6a01c14c4c6af79a
+      md5: 43e3670668404380935bb8e001779c42
       size: 349
     - path: reports/confusion_matrix.txt
       hash: md5
-      md5: c3f9477728b0ddbe646cdf9dc8fdfb24
+      md5: a95565759d18ca237b385e29832f1b25
       size: 52
     - path: reports/test_accuracy.txt
       hash: md5
-      md5: d15c416ee8d03040380eb1d30f2a8e05
+      md5: 9c838b6c95e6d62bbac65f5c32f35de3
       size: 34
     - path: reports/test_loss.txt
       hash: md5
-      md5: 71e73c5246d00c793494fa3b702eb32a
+      md5: 100e236d3124cb4a84d5e5871a6f5a69
       size: 31
+  upload_model:
+    cmd: gsutil cp models/model.keras gs://remla_group_9_model/models.keras
+    deps:
+    - path: models/model.keras
+      hash: md5
+      md5: 57e7a6418e2ee972ef12d8eadc6a33c0
+      size: 5493632
+  upload_tokenizer:
+    cmd: gsutil cp data/interim/tokenizer.pkl gs://remla_group_9_model/tokenizer.pkl
+    deps:
+    - path: data/interim/tokenizer.pkl
+      hash: md5
+      md5: 94278e3c7a195616ed3f0cd3b9721b79
+      size: 2402

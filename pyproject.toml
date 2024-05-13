@@ -20,6 +20,7 @@ dslinter = "^2.0.9"
 pylint = "2.12.2"
 requests = "^2.31.0"
 tqdm = "^4.66.4"
+dvc-gs = "^3.0.1"
 
 
 [build-system]
