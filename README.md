@@ -44,7 +44,10 @@ If you run into issues when installing TensorFlow, check your system path length
 poetry shell
 ```
 
-### 5. Bind to the DVC Remote Storage
+### 5. Install Google Cloud CLI
+To manage `dvc` configurations and to store the trained model we use Google Cloud Storage. To able to run the DVC pipeline, `gcloud` CLI must be installed globally. Follow this [link](https://cloud.google.com/sdk/docs/install) to install. After installation, run `gcloud auth login` and follow the first link to complete authentication.
+
+### 6. Bind to the DVC Remote Storage
 To manage and version control large data files and models, we use Data Version Control (DVC):
 
 #### Initialize DVC (if not already done)
@@ -57,7 +60,7 @@ poetry run dvc init
 poetry run dvc pull
 ```
 
-### 6. Running the Project
+### 7. Running the Project
 To run the project and reproduce all stages defined in `dvc.yaml`:
 
 ```bash
