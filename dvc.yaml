@@ -99,9 +99,68 @@ stages:
       - src/test_model.py
       - data/interim/test_features.txt
       - data/interim/test_labels.txt
-      - models/model.keras # SHOULD BE models/model.keras
+      - models/model.keras
     outs:
       - reports/test_accuracy.txt
       - reports/test_loss.txt
       - reports/classification_report.txt
       - reports/confusion_matrix.txt
+
+  test_long_urls:
+    cmd: python tests/test_long_urls.py
+    deps:
+      - tests/test_long_urls.py
+      - models/model.keras
+    outs:
+      - reports/test_long_urls.txt
+
+  test_memory_usage:
+    cmd: python tests/test_memory_usage.py
+    deps:
+      - tests/test_memory_usage.py
+      - models/model.keras
+    outs:
+      - reports/test_memory_usage.txt
+
+  test_repeatability:
+    cmd: python tests/test_repeatability.py
+    deps:
+      - tests/test_repeatability.py
+      - models/model.keras
+    outs:
+      - reports/test_repeatability.txt
+
+  test_tokenization_latency:
+    cmd: python tests/test_tokenization_latency.py
+    deps:
+      - tests/test_tokenization_latency.py
+      - data/interim/tokenized_test.txt
+    outs:
+      - reports/test_tokenization_latency.txt
+
+  test_implicit_bias:
+    cmd: python tests/test_implicit_bias.py
+    deps:
+      - tests/test_implicit_bias.py
+      - data/interim/tokenized_test.txt
+      - data/interim/encoded_test_labels.txt
+      - data/interim/test_demographics.txt
+      - models/model.keras
+    outs:
+      - implicit_bias_results.json
+
+  test_integration:
+    cmd: python tests/integration_test.py
+    deps:
+      - tests/integration_test.py
+      - models/model.keras
+    outs:
+      - reports/integration_test_results.txt
+
+  test_parity:
+    cmd: python tests/test_parity.py
+    deps:
+      - tests/test_parity.py
+      - models/model.keras
+    outs:
+      - reports/test_parity_results.txt
