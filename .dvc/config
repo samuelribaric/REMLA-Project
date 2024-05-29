@@ -1,4 +1,6 @@
 [core]
-    remote = mygdrive
+    remote = gcs
 ['remote "mygdrive"']
     url = gdrive://1XhzcyrUHVEerPQgE-_JjtkZvDfEihHtF
+['remote "gcs"']
+    url = gs://remla_group_9_model
