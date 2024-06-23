@@ -9,7 +9,7 @@ git clone git@github.com:remla2024-team9/model-training.git
 
 ### 2. Navigate to the project directory
 ```bash
-cd REMLA-Project
+cd model-training
 ```
 
 ### 3. Install Poetry
