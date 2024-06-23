@@ -4,7 +4,7 @@ Welcome to the REMLA-Project repository! This project is designed to utilize an 
 
 ### 1. Clone the repository
 ```bash
-git clone git@github.com:samuelribaric/REMLA-Project.git
+git clone git@github.com:remla2024-team9/model-training.git
 ```
 
 ### 2. Navigate to the project directory
