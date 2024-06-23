@@ -11,6 +11,7 @@ def load_test_data():
 
 def test_model():
     """Tests the saved model on the test dataset."""
+    np.random.seed(42)  # Set seed for reproducibility
     x_test, y_test = load_test_data()
 
     model = load_model("models/model.keras")

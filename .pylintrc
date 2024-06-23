@@ -10,7 +10,7 @@ unsafe-load-any-extension=no
 
 [MESSAGES CONTROL]
 confidence=
-disable=import-error, no-name-in-module, sk-pipeline
+disable=import-error, no-name-in-module, sk-pipeline, duplicate-code
 enable=
 
 

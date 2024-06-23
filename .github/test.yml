@@ -1,0 +1,42 @@
+name: CI Pipeline
+
+on: 
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov dvc
+        dvc pull  # To pull data dependencies
+    
+    - name: Run tests
+      run: |
+        pytest --cov=src tests/
+        
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: htmlcov/
+        
+    - name: Generate test results
+      run: |
+        pytest --junitxml=results.xml
+        python -m coverage
