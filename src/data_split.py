@@ -8,7 +8,6 @@ def main():
     input_path = sys.argv[1]
     features_output_path = sys.argv[2]
     labels_output_path = sys.argv[3]
-    
 
     # Load data and skip header if needed
     with open(input_path, 'r', encoding="utf-8") as file:

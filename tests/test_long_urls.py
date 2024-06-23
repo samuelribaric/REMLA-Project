@@ -11,11 +11,12 @@ def load_test_data():
 
 def test_model():
     """Tests the saved model on long URLs in the test dataset."""
+    np.random.seed(42)  # Set seed for reproducibility
     x_test, y_test = load_test_data()
-    
+
     # Print the total number of datapoints initially
     print("Total number of datapoints:", len(x_test))
-    
+
     # Define the minimum number of non-zero tokens for a URL to be considered long
     min_tokens = 100
 
@@ -24,12 +25,12 @@ def test_model():
     # in its tokenized form, it will have X non-zero entries.
     # Thus, the above condition is equivalent to saying
     # that a URL has to have more than 100 characters.
-    
+
     # Filter the test data to include only sequences with more than `min_tokens` non-zero entries
     long_urls_indices = [i for i, sequence in enumerate(x_test) if np.count_nonzero(sequence) > min_tokens]
     x_test_long = x_test[long_urls_indices]
     y_test_long = y_test[long_urls_indices]
-    
+
     # Print the number of long datapoints
     print("Number of long datapoints:", len(x_test_long))
 

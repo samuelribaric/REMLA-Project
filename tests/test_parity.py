@@ -1,8 +1,12 @@
+"""
+This module tests the model calibration, equalized odds, and demographic parity across different demographic groups.
+"""
+
 import numpy as np
 from keras.models import load_model
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, brier_score_loss, roc_curve
+from sklearn.metrics import brier_score_loss, roc_curve
+from sklearn.calibration import calibration_curve
 import matplotlib.pyplot as plt
-
 
 def load_test_data():
     """Loads test data from interim files"""
@@ -11,11 +15,8 @@ def load_test_data():
     demographics = np.loadtxt('data/interim/test_demographics.txt', dtype=str)
     return x_test, y_test, demographics
 
-
 def plot_calibration_curve(y_true, y_prob, group):
     """Plots calibration curve for a demographic group"""
-    from sklearn.calibration import calibration_curve
-
     fraction_of_positives, mean_predicted_value = calibration_curve(y_true, y_prob, n_bins=10)
 
     plt.plot(mean_predicted_value, fraction_of_positives, "s-", label=f"{group}")
@@ -26,9 +27,9 @@ def plot_calibration_curve(y_true, y_prob, group):
     plt.legend()
     plt.show()
 
-
 def test_model_calibration():
     """Tests the model calibration for different demographic groups."""
+    np.random.seed(42)  # Set seed for reproducibility
     x_test, y_test, demographics = load_test_data()
 
     model = load_model("models/model.keras")
@@ -46,9 +47,9 @@ def test_model_calibration():
         print(f"\nBrier score for group {group}: {brier_score:.4f}")
         plot_calibration_curve(y_test_group, y_prob, group)
 
-
 def test_equalized_odds():
     """Tests the model for equalized odds across different demographic groups."""
+    np.random.seed(42)  # Set seed for reproducibility
     x_test, y_test, demographics = load_test_data()
 
     model = load_model("models/model.keras")
@@ -62,8 +63,6 @@ def test_equalized_odds():
         y_test_group = y_test[group_indices]
 
         y_prob = model.predict(x_test_group).flatten()
-        y_pred_binary = (y_prob > 0.5).astype(int)
-
         fpr, tpr, _ = roc_curve(y_test_group, y_prob)
         results.append({'group': group, 'tpr': tpr, 'fpr': fpr})
 
@@ -83,10 +82,10 @@ def test_equalized_odds():
     plt.legend()
     plt.show()
 
-
 def test_demographic_parity():
     """Tests the model for demographic parity across different demographic groups."""
-    x_test, y_test, demographics = load_test_data()
+    np.random.seed(42)  # Set seed for reproducibility
+    x_test, _, demographics = load_test_data()  # Removed unused variable y_test
 
     model = load_model("models/model.keras")
 
@@ -95,7 +94,6 @@ def test_demographic_parity():
     for group in unique_demographics:
         group_indices = np.where(demographics == group)[0]
         x_test_group = x_test[group_indices]
-        y_test_group = y_test[group_indices]
 
         y_prob = model.predict(x_test_group).flatten()
         y_pred_binary = (y_prob > 0.5).astype(int)
@@ -104,7 +102,6 @@ def test_demographic_parity():
 
         print(f"\nDemographic Parity for group {group}:")
         print(f"Prediction Rate: {prediction_rate:.4f}")
-
 
 if __name__ == "__main__":
     print("Testing Model Calibration...")
