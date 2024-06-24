@@ -55,7 +55,7 @@ def test_model():
         "Accuracy score": accuracy_score(y_test_long, y_pred_binary)
     }
 
-    with open('reports/test_long_urls.txt', 'w') as outfile:
+    with open('reports/test_long_urls.json', 'w') as outfile:
         json.dump(results, outfile, indent=4)
 
     print('Classification Report:')

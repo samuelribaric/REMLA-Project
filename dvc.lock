@@ -295,10 +295,10 @@ stages:
       size: 5493632
     - path: tests/test_long_urls.py
       hash: md5
-      md5: a62988477525b45f2b61e02febdea508
-      size: 2580
+      md5: eab318be55672223336d8f3898068c70
+      size: 2581
     outs:
-    - path: reports/test_long_urls.txt
+    - path: reports/test_long_urls.json
       hash: md5
       md5: 4c7cb7cdbbd04ffae239ec08278aeb86
       size: 649

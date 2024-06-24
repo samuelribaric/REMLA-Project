@@ -112,7 +112,7 @@ stages:
       - tests/test_long_urls.py
       - models/model.keras
     outs:
-      - reports/test_long_urls.txt
+      - reports/test_long_urls.json
 
   test_memory_usage:
     cmd: python tests/test_memory_usage.py
@@ -120,7 +120,7 @@ stages:
       - tests/test_memory_usage.py
       - models/model.keras
     outs:
-      - reports/test_memory_usage.txt
+      - reports/test_memory_usage.json
 
   test_repeatability:
     cmd: python tests/test_repeatability.py
