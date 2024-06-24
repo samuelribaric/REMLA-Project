@@ -161,6 +161,9 @@ stages:
     cmd: python tests/test_parity.py
     deps:
       - tests/test_parity.py
+      - data/interim/tokenized_test.txt
+      - data/interim/encoded_test_labels.txt
+      - data/interim/test_demographics.txt
       - models/model.keras
     outs:
-      - reports/test_parity_results.txt
+      - reports/test_parity.json
