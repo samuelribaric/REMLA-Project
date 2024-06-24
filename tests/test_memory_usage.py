@@ -1,9 +1,13 @@
+"""
+This module tests the memory usage of a Keras model on the test dataset.
+It measures memory usage before and after evaluation, as well as evaluation time and performance metrics.
+"""
+
+import time
+import psutil
 import numpy as np
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-import psutil
-import time
-
 
 def load_test_data():
     """Loads test data from interim files"""
@@ -11,9 +15,9 @@ def load_test_data():
     y_test = np.loadtxt('data/interim/encoded_test_labels.txt', dtype=int)
     return x_test, y_test
 
-
 def test_memory_usage():
     """Tests the memory usage of the model on the test dataset."""
+    np.random.seed(42)  # Set seed for reproducibility
     x_test, y_test = load_test_data()
 
     print("Total number of datapoints:", len(x_test))
@@ -50,7 +54,6 @@ def test_memory_usage():
     print(report)
     print('Confusion Matrix:', confusion_mat)
     print('Accuracy:', accuracy_score(y_test, y_pred_binary))
-
 
 if __name__ == "__main__":
     test_memory_usage()

@@ -1,4 +1,7 @@
-"""import module docstring here"""
+"""
+Tokenizes features from train, validation, and test datasets
+Saves the tokenized data and tokenizer to interim files
+"""
 import sys
 import pickle
 import numpy as np

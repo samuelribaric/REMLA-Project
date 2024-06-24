@@ -1,3 +1,8 @@
+"""
+This module tests a Keras model for implicit bias across different demographic groups.
+It loads test data, evaluates the model, and prints as well as saves the results.
+"""
+import json
 import numpy as np
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
@@ -13,12 +18,13 @@ def load_test_data():
 
 def test_implicit_bias():
     """Tests the model for implicit bias across different demographic groups."""
+    np.random.seed(42)  # Set seed for reproducibility
     x_test, y_test, demographics = load_test_data()
 
     model = load_model("models/model.keras")
 
     unique_demographics = np.unique(demographics)
-    results = []
+    bias_results = []
 
     for group in unique_demographics:
         group_indices = np.where(demographics == group)[0]
@@ -29,15 +35,14 @@ def test_implicit_bias():
         y_pred = model.predict(x_test_group)
         y_pred_binary = (y_pred > 0.5).astype(int)
 
-        report = classification_report(y_test_group, y_pred_binary, output_dict=True)
         confusion_mat = confusion_matrix(y_test_group, y_pred_binary)
         accuracy = accuracy_score(y_test_group, y_pred_binary)
 
-        results.append({
+        bias_results.append({
             'group': group,
             'loss': loss,
             'accuracy': accuracy,
-            'classification_report': report,
+            'classification_report': classification_report(y_test_group, y_pred_binary, output_dict=True),
             'confusion_matrix': confusion_mat
         })
 
@@ -49,13 +54,11 @@ def test_implicit_bias():
         print('Confusion Matrix:')
         print(confusion_mat)
 
-    return results
+    return bias_results
 
 
 if __name__ == "__main__":
     results = test_implicit_bias()
-    # Save the results to a file if needed
-    import json
-
-    with open('implicit_bias_results.json', 'w') as f:
+    # Save the results to a file
+    with open('implicit_bias_results.json', 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=4)

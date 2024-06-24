@@ -19,7 +19,6 @@ def main():
         test_labels = file.readlines()
 
     train_labels, val_labels, test_labels = encode_labels(train_labels, val_labels, test_labels)
-    
     # Save encoded labels
     np.savetxt("data/interim/encoded_train_labels.txt", train_labels, fmt='%d')
     np.savetxt("data/interim/encoded_val_labels.txt", val_labels, fmt='%d')
