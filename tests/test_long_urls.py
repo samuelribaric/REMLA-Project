@@ -2,6 +2,7 @@
 import numpy as np
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+import json
 
 def load_test_data():
     """Loads test data from interim files"""
@@ -45,6 +46,17 @@ def test_model():
 
     report = classification_report(y_test_long, y_pred_binary)
     confusion_mat = confusion_matrix(y_test_long, y_pred_binary)
+
+    results = {
+        "Test accuracy": accuracy,
+        "Test loss": loss,
+        "Classification report": report,
+        "Confusion matrix": confusion_mat.tolist(),  # convert numpy array to list for JSON serialization
+        "Accuracy score": accuracy_score(y_test_long, y_pred_binary)
+    }
+
+    with open('reports/test_long_urls.txt', 'w') as outfile:
+        json.dump(results, outfile, indent=4)
 
     print('Classification Report:')
     print(report)
