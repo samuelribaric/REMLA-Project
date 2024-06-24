@@ -136,7 +136,7 @@ stages:
       - tests/test_tokenization_latency.py
       - data/interim/tokenized_test.txt
     outs:
-      - reports/test_tokenization_latency.txt
+      - reports/test_tokenization_latency.json
 
   test_implicit_bias:
     cmd: python tests/test_implicit_bias.py

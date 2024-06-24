@@ -5,6 +5,7 @@ This module tests the latency of tokenizing URLs using a Keras Tokenizer.
 import time
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import json
 
 
 def load_test_data():
@@ -39,6 +40,18 @@ def test_tokenization_latency():
         print(f"\rTokenized {index}/{total_features} URLs", end='')
 
     print(f"\nTotal tokenization time: {elapsed_time:.2f} seconds, Average rate: {rate:.2f} URLs/sec")
+
+    results = {
+        "Total tokenization time": elapsed_time,
+        "Average rate": rate,
+        "Min Time": min(times),
+        "Max Time": max(times),
+        "Average Time": sum(times) / len(times),
+        "Total evaluated": total_features
+    }
+
+    with open('reports/test_tokenization_latency.json', 'w') as outfile:
+        json.dump(results, outfile, indent=4)
 
     print(f"Min Time: {min(times):.5f} seconds")
     print(f"Max Time: {max(times):.5f} seconds")

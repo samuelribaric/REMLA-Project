@@ -334,3 +334,19 @@ stages:
       hash: md5
       md5: 8f11f7964701d605a6805e1ceeb2c36a
       size: 254
+  test_tokenization_latency:
+    cmd: python tests/test_tokenization_latency.py
+    deps:
+    - path: data/interim/tokenized_test.txt
+      hash: md5
+      md5: 8edfd2cc3629bd6d67b3f652950dea09
+      size: 162350139
+    - path: tests/test_tokenization_latency.py
+      hash: md5
+      md5: d49aae1a336a21d63238a40c5f97b0d6
+      size: 2209
+    outs:
+    - path: reports/test_tokenization_latency.json
+      hash: md5
+      md5: c06064d5648ebfc2547d9e4efade550f
+      size: 234
