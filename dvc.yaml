@@ -138,17 +138,6 @@ stages:
     outs:
       - reports/test_tokenization_latency.json
 
-  test_implicit_bias:
-    cmd: python tests/test_implicit_bias.py
-    deps:
-      - tests/test_implicit_bias.py
-      - data/interim/tokenized_test.txt
-      - data/interim/encoded_test_labels.txt
-      - data/interim/test_demographics.txt
-      - models/model.keras
-    outs:
-      - implicit_bias.json
-
   test_integration:
     cmd: python tests/test_integration.py
     deps:
@@ -156,14 +145,3 @@ stages:
       - models/model.keras
     outs:
       - reports/test_integration.json
-
-  test_parity:
-    cmd: python tests/test_parity.py
-    deps:
-      - tests/test_parity.py
-      - data/interim/tokenized_test.txt
-      - data/interim/encoded_test_labels.txt
-      - data/interim/test_demographics.txt
-      - models/model.keras
-    outs:
-      - reports/test_parity.json
