@@ -302,3 +302,19 @@ stages:
       hash: md5
       md5: 4c7cb7cdbbd04ffae239ec08278aeb86
       size: 649
+  test_memory_usage:
+    cmd: python tests/test_memory_usage.py
+    deps:
+    - path: models/model.keras
+      hash: md5
+      md5: 624da3ffd42ec3f438857ded5108afd9
+      size: 5493632
+    - path: tests/test_memory_usage.py
+      hash: md5
+      md5: 5e9f8a7a88d9902ac0d893e8e478b730
+      size: 2711
+    outs:
+    - path: reports/test_memory_usage.json
+      hash: md5
+      md5: d6e59b79a9022824cdb399614b263474
+      size: 839
