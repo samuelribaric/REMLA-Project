@@ -34,7 +34,7 @@ stages:
     outs:
       - data/interim/val_features.txt
       - data/interim/val_labels.txt
-  
+
   tokenize_features:
     cmd: python src/tokenize_features.py data/interim/train_features.txt data/interim/val_features.txt data/interim/test_features.txt
     deps:
@@ -47,7 +47,7 @@ stages:
       - data/interim/tokenized_val.txt
       - data/interim/tokenized_test.txt
       - data/interim/tokenizer.pkl
-    
+
   encode_labels:
     cmd: python src/encode_labels.py data/interim/train_labels.txt data/interim/val_labels.txt data/interim/test_labels.txt
     deps:
@@ -59,7 +59,7 @@ stages:
       - data/interim/encoded_train_labels.txt
       - data/interim/encoded_val_labels.txt
       - data/interim/encoded_test_labels.txt
-  
+
   train_model:
     cmd: python src/train_model.py
     deps:
@@ -82,16 +82,88 @@ stages:
       - reports/metrics.json
     plots:
       - reports/loss_plot.svg
-    
+
+  upload_model:
+    cmd: gsutil cp models/model.keras gs://remla_group_9_model/models.keras
+    deps:
+      - models/model.keras
+
+  upload_tokenizer:
+    cmd: gsutil cp data/interim/tokenizer.pkl gs://remla_group_9_model/tokenizer.pkl
+    deps:
+      - data/interim/tokenizer.pkl
+
   test_model:
     cmd: python src/test_model.py
     deps:
       - src/test_model.py
       - data/interim/test_features.txt
       - data/interim/test_labels.txt
-      - models/best_model.keras # SHOULD BE models/model.keras
+      - models/model.keras
     outs:
       - reports/test_accuracy.txt
       - reports/test_loss.txt
       - reports/classification_report.txt
       - reports/confusion_matrix.txt
+
+  test_long_urls:
+    cmd: python tests/test_long_urls.py
+    deps:
+      - tests/test_long_urls.py
+      - models/model.keras
+    outs:
+      - reports/test_long_urls.json
+
+  test_memory_usage:
+    cmd: python tests/test_memory_usage.py
+    deps:
+      - tests/test_memory_usage.py
+      - models/model.keras
+    outs:
+      - reports/test_memory_usage.json
+
+  test_repeatability:
+    cmd: python tests/test_repeatability.py
+    deps:
+      - tests/test_repeatability.py
+      - models/model.keras
+    outs:
+      - reports/test_repeatability.json
+
+  test_tokenization_latency:
+    cmd: python tests/test_tokenization_latency.py
+    deps:
+      - tests/test_tokenization_latency.py
+      - data/interim/tokenized_test.txt
+    outs:
+      - reports/test_tokenization_latency.json
+
+  test_implicit_bias:
+    cmd: python tests/test_implicit_bias.py
+    deps:
+      - tests/test_implicit_bias.py
+      - data/interim/tokenized_test.txt
+      - data/interim/encoded_test_labels.txt
+      - data/interim/test_demographics.txt
+      - models/model.keras
+    outs:
+      - implicit_bias.json
+
+  test_integration:
+    cmd: python tests/test_integration.py
+    deps:
+      - tests/test_integration.py
+      - models/model.keras
+    outs:
+      - reports/test_integration.json
+
+  test_parity:
+    cmd: python tests/test_parity.py
+    deps:
+      - tests/test_parity.py
+      - data/interim/tokenized_test.txt
+      - data/interim/encoded_test_labels.txt
+      - data/interim/test_demographics.txt
+      - models/model.keras
+    outs:
+      - reports/test_parity.json
