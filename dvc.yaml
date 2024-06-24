@@ -150,12 +150,12 @@ stages:
       - implicit_bias_results.json
 
   test_integration:
-    cmd: python tests/integration_test.py
+    cmd: python tests/test_integration.py
     deps:
-      - tests/integration_test.py
+      - tests/test_integration.py
       - models/model.keras
     outs:
-      - reports/integration_test_results.txt
+      - reports/test_integration.json
 
   test_parity:
     cmd: python tests/test_parity.py

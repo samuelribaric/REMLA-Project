@@ -350,3 +350,19 @@ stages:
       hash: md5
       md5: c06064d5648ebfc2547d9e4efade550f
       size: 234
+  test_integration:
+    cmd: python tests/test_integration.py
+    deps:
+    - path: models/model.keras
+      hash: md5
+      md5: 624da3ffd42ec3f438857ded5108afd9
+      size: 5493632
+    - path: tests/test_integration.py
+      hash: md5
+      md5: d341ad354b51d283e38d8942f951ded5
+      size: 3967
+    outs:
+    - path: reports/test_integration.json
+      hash: md5
+      md5: 06d02263452b0f153130d51e7d1b227b
+      size: 1351
