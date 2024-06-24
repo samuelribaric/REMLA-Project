@@ -60,5 +60,5 @@ def test_implicit_bias():
 if __name__ == "__main__":
     results = test_implicit_bias()
     # Save the results to a file
-    with open('implicit_bias_results.json', 'w', encoding='utf-8') as f:
+    with open('implicit_bias.json', 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=4)

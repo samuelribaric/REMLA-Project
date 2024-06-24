@@ -147,7 +147,7 @@ stages:
       - data/interim/test_demographics.txt
       - models/model.keras
     outs:
-      - implicit_bias_results.json
+      - implicit_bias.json
 
   test_integration:
     cmd: python tests/test_integration.py
