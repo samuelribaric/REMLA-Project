@@ -318,3 +318,19 @@ stages:
       hash: md5
       md5: d6e59b79a9022824cdb399614b263474
       size: 839
+  test_repeatability:
+    cmd: python tests/test_repeatability.py
+    deps:
+    - path: models/model.keras
+      hash: md5
+      md5: 624da3ffd42ec3f438857ded5108afd9
+      size: 5493632
+    - path: tests/test_repeatability.py
+      hash: md5
+      md5: 6464078456f8c086e54aca30f300f7fa
+      size: 2210
+    outs:
+    - path: reports/test_repeatability.json
+      hash: md5
+      md5: 8f11f7964701d605a6805e1ceeb2c36a
+      size: 254

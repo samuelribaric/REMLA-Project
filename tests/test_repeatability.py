@@ -1,6 +1,7 @@
 """Utility module for testing model on the test dataset"""
 import numpy as np
 from keras.models import load_model
+import json
 
 def load_test_data():
     """Loads test data from interim files"""
@@ -27,12 +28,30 @@ def test_model_repeatability(runs=5, sample_size=0.5):
         accuracies.append(accuracy)
         losses.append(loss)
 
-    print(f"Average Test Accuracy: {np.mean(accuracies)}")
-    print(f"Standard Deviation of Accuracy: {np.std(accuracies)}")
-    print(f"Average Test Loss: {np.mean(losses)}")
-    print(f"Standard Deviation of Loss: {np.std(losses)}")
+    avg_accuracy = np.mean(accuracies)
+    std_accuracy = np.std(accuracies)
+    avg_loss = np.mean(losses)
+    std_loss = np.std(losses)
 
-    if np.std(accuracies) > 0.01 or np.std(losses) > 0.01:
+    variability_warning = bool(std_accuracy > 0.01 or std_loss > 0.01)
+
+    results = {
+        "Average Test Accuracy": float(avg_accuracy),
+        "Standard Deviation of Accuracy": float(std_accuracy),
+        "Average Test Loss": float(avg_loss),
+        "Standard Deviation of Loss": float(std_loss),
+        "Variability Warning": variability_warning
+    }
+
+    with open('reports/test_repeatability.json', 'w') as outfile:
+        json.dump(results, outfile, indent=4)
+
+    print(f"Average Test Accuracy: {avg_accuracy}")
+    print(f"Standard Deviation of Accuracy: {std_accuracy}")
+    print(f"Average Test Loss: {avg_loss}")
+    print(f"Standard Deviation of Loss: {std_loss}")
+
+    if variability_warning:
         print("Warning: Model results show significant variability.")
     else:
         print("Model results are consistent.")

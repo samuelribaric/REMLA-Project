@@ -128,7 +128,7 @@ stages:
       - tests/test_repeatability.py
       - models/model.keras
     outs:
-      - reports/test_repeatability.txt
+      - reports/test_repeatability.json
 
   test_tokenization_latency:
     cmd: python tests/test_tokenization_latency.py
