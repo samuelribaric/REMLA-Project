@@ -84,9 +84,10 @@ stages:
       - reports/loss_plot.svg
 
   upload_model:
-    cmd: gsutil cp models/model.keras gs://remla_group_9_model/models.keras
+    cmd: python src/upload_model.py
     deps:
       - models/model.keras
+      - src/upload_model.py
 
   upload_tokenizer:
     cmd: gsutil cp data/interim/tokenizer.pkl gs://remla_group_9_model/tokenizer.pkl

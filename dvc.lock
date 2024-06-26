@@ -220,22 +220,22 @@ stages:
         - phishing
         - legitimate
         embedding_dimension: 50
-        epoch: 1
+        epoch: 2
         loss_function: binary_crossentropy
         optimizer: adam
     outs:
     - path: models/model.keras
       hash: md5
-      md5: 624da3ffd42ec3f438857ded5108afd9
+      md5: d45aa17060572f35f38557cd9c6a82dc
       size: 5493632
     - path: reports/loss_plot.svg
       hash: md5
-      md5: 184da95d0ad427adfa7191780ab11e8f
-      size: 21900
+      md5: 86930aa0349f021a0adc582be97a8f23
+      size: 24292
     - path: reports/metrics.json
       hash: md5
-      md5: 0320f77442f51d93b92b43dbc9a347d3
-      size: 137
+      md5: f982c90916f047fe7af8486815c5e07c
+      size: 220
   test_model:
     cmd: python src/test_model.py
     deps:
@@ -273,12 +273,16 @@ stages:
       md5: 100e236d3124cb4a84d5e5871a6f5a69
       size: 31
   upload_model:
-    cmd: gsutil cp models/model.keras gs://remla_group_9_model/models.keras
+    cmd: python src/upload_model.py
     deps:
     - path: models/model.keras
       hash: md5
-      md5: 57e7a6418e2ee972ef12d8eadc6a33c0
+      md5: d45aa17060572f35f38557cd9c6a82dc
       size: 5493632
+    - path: src/upload_model.py
+      hash: md5
+      md5: 37df4564011ab3d9c8ca31635bcf5fbd
+      size: 590
   upload_tokenizer:
     cmd: gsutil cp data/interim/tokenizer.pkl gs://remla_group_9_model/tokenizer.pkl
     deps:

@@ -7,5 +7,5 @@ categories:
   - 'phishing'
   - 'legitimate'
 char_index: null
-epoch: 1 # ORIGINALLY 30 BUT FOR TESTING PURPOSES
+epoch: 2 # ORIGINALLY 30 BUT FOR TESTING PURPOSES
 embedding_dimension: 50
